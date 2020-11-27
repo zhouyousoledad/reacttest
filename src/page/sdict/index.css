@@ -1,0 +1,61 @@
+.dictlcass{
+	height:100%;
+	background-color: #f0f2f5;
+}
+.dictcontent{
+	height: 100%;
+}
+.dictleft ,.dictright{
+	height: 100%;
+}
+.dictinner{
+	height: 100%;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+	padding: 20px;
+}
+.dictinner-out{
+	height: 100%;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+	padding: 0px 0 20px 0;
+}
+.seracherinpuy{
+	width: 150px !important;
+	margin-right: 15px !important;
+}
+.seracherbutton{
+	
+}
+.marginbo{
+	margin-bottom: 15px;
+}
+.marginle{
+	margin-left: 15px;
+}
+.deatil-head{
+	height: 60px;
+	line-height: 60px;
+	border-bottom: 1px solid #e6ebf5;
+	font-size: 16px;
+	padding:0 20px;
+	color: #303133;
+}
+.right{
+	float: right;
+}
+.deatil-bottom{
+	padding: 20px;
+}
+.detaul-tip{
+	height: 50px;
+	line-height: 50px;
+	border-left: 5px solid #ddd;
+}
+.detaul-tip span{
+	padding-left: 15px;
+	font-size: 12px;
+	color: #333;
+}

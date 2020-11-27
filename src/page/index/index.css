@@ -1,0 +1,45 @@
+.logo {
+  height: 32px !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  margin: 16px !important;
+}
+
+.site-layout-sub-header-background {
+  background: #fff !important;
+}
+
+.site-layout-background {
+  background: #fff !important;
+}
+.content-headers{
+	height: 64px;
+}
+.content-headers-left, .content-headers-right{
+	float: left;
+	width: 50%;
+	height: 64px;
+}
+.content-headers-left{
+	display: flex;
+	align-items: center;
+}
+.content-headers-left-margin{
+	margin-left: 16px;
+}
+.avatar{
+	width: 65px;
+	position: relative;
+	float: right;
+	margin-right: 16px;
+	cursor: pointer;
+}
+.avatar img{
+	width: 45px;
+	height: 45px;
+	border-radius: 10px;
+}
+.avatar span{
+	position: absolute;
+	bottom: 8px;
+	right: 0;
+}

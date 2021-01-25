@@ -3,7 +3,7 @@ import React, {
 	createRef
 } from 'react';
 import ReactDOM from 'react-dom';
-import { typedetail,typeadddetail,typeeduitdetail,typedeletedetail } from '../../axios/type';
+import { labeldetail,labeladddetail,labeleduitdetail,labeldeletedetail } from '../../axios/label';
 import './type.css';
 import { Table, Row, Col, Input, Button, Modal, Form, message, Select } from 'antd';
 import { SearchOutlined, PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
@@ -26,7 +26,7 @@ class ForwardRef extends Component {
 	constructor(props) {
 		super(props);
 		this.columns = [{
-				title: '分类名称',
+				title: '标签名称',
 				key: 'name',
 				width: 150,
 				dataIndex: 'name',
@@ -110,32 +110,18 @@ class ForwardRef extends Component {
 						}
         		</div>
         </div>
-        <input type="file" ref={this.fileInput} onChange={this.onGetFile} style={{display:'none'}} />
+ 
         <Modal title={this.state.vtitle} visible={this.state.visible} onOk={this.otherBtnClick} onCancel={this.cancel} okText="确定" cancelText="取消">
        <div className="model-top">
        <Form {...layout} ref={this.formRef}>
             <Form.Item label="分类名称" name='name' rules={[{required: true, validator: this.validateName}]}>
               <Input placeholder='请输入' />
             </Form.Item>
-            <Form.Item label="适用机构" name='institutions' rules={[{ required: true, message: '请选择机构' }]}>
-            	<Select mode="multiple" allowClear showArrow="true" style={{ width: '100%' }} placeholder="请选择">
-      				{children}
-    			</Select>
-            </Form.Item>
-            
 			<Form.Item label="排序" name='sort'>
               <Input placeholder='请输入' />
-            </Form.Item>
-            
+            </Form.Item>            
             <Form.Item label="备注" name='remarks'>
             <TextArea placeholder='请输入' rows={4} />
-            </Form.Item>
-            <Form.Item label="上传图片" name='file'>
-            	<div className="uploads" onClick={this.startup}>
-            	{ 
-        			this.state.imgurl == '' ? <PlusOutlined />:<img src={this.state.imgurl} />
-				}
-            	</div>
             </Form.Item>
       </Form>
       </div>
@@ -143,24 +129,8 @@ class ForwardRef extends Component {
         </div>
 		);
 	}
-	startup = () => {
-		this.fileInput.current.click()
-	}
-	onGetFile = (e) => {
-		const _this = this
-		const file = e.target.files[0];
-		this.setState({
-			avat: file
-		})
-		const fr = new FileReader();
-		fr.readAsDataURL(file);
-		fr.onload = () => {
-			this.setState({
-				imgurl: fr.result
-			});
-		};
-		e.target.value = ''
-	}
+
+
 	onSelectChange = (selectedRowKeys, selectedRows) => {
 		this.setState({
 			selectedRowKeys,
@@ -197,7 +167,7 @@ class ForwardRef extends Component {
 			"size": this.state.size,
 			"pid": this.state.pid
 		}
-		typedetail(a).then(res => {
+		labeldetail(a).then(res => {
 			console.log(res)
 			this.setState({
 				'tabledata': res.data.data,
@@ -241,7 +211,7 @@ class ForwardRef extends Component {
 			var a={
 				"id":row._id
 			}
-			typedeletedetail(a).then(res=>{
+			labeldeletedetail(a).then(res=>{
 				message.success('删除成功');
 				_this.gettable()
 			})
@@ -263,18 +233,12 @@ class ForwardRef extends Component {
 	
 		this.formRef.current.validateFields().then((values) => {
 			console.log(values)
-			var formData = new FormData()
-			formData.append('name', values.name)
-			formData.append('remarks', values.remarks)
-			formData.append('sort', values.sort)
-			formData.append('pid', this.state.pid)
-			formData.append('institutions', values.institutions.join(','))
-			if(this.state.avat.name == undefined){
-			}else{
-				formData.append('file', this.state.avat)
-			}
+
+			var obj = JSON.parse(JSON.stringify(values))
+			obj.pid = this.state.pid
+			
 			if(this.state.id == '' || this.state.id == null){
-				typeadddetail(formData).then(res => {
+				labeladddetail(obj).then(res => {
 				console.log(res)
 				if(res.data.code == 200){
 					message.success('添加成功');
@@ -283,8 +247,9 @@ class ForwardRef extends Component {
 				}
 			})
 			}else{
-				formData.append("id",this.state.id)
-				typeeduitdetail(formData).then(res => {
+				obj.id = this.state.id
+
+				labeleduitdetail(obj).then(res => {
 				console.log(res)
 				if(res.data.code == 200){
 					message.success('修改成功');

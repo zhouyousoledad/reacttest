@@ -8,6 +8,9 @@ import Two from '../page/sdict';
 import Label from '../page/typemanager/label';
 import Classify from '../page/typemanager/type';
 import Nofond from '../page/nofond';
+import Media from '../page/media'
+import Warning from '../page/warning/warning'
+import Institutions from '../page/institutions/institutions'
 import { Router,Switch,Route,Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history'; // 如果是hash路由
 //引入一些模块
@@ -64,12 +67,12 @@ const userrouter = {
       },
       {
         path: "/index/psychologicalinstitutions",
-        component: Classify,
+        component: Institutions,
         requiresAuth: false,
       },
       {
         path: "/index/medialist",
-        component: Classify,
+        component: Media,
         requiresAuth: false,
       },
       {
@@ -84,7 +87,7 @@ const userrouter = {
       },
       {
         path: "/index/addwarning",
-        component: Classify,
+        component: Warning,
         requiresAuth: false,
       },
       {

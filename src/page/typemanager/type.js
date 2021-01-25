@@ -112,10 +112,10 @@ const validateName = (rule, value) => {
     			};
   			}}
         pagination={{ 
-        	defaultPageSize:5,
+        	defaultPageSize:this.state.size,
         	total:this.state.total,
         	showTotal: () => '共'+this.state.total+'条',
-        	itemRender:this.onShowSizeChange
+        	onChange:this.onChange
         }}
         rowSelection={rowSelection}
       />
@@ -149,15 +149,12 @@ const validateName = (rule, value) => {
 			selectedRows
 		});		
 	};
-	onShowSizeChange = (current, type, originalElement) => {
-		if(type === 'prev') {
-			return <a>上页</a>;
-		}
-		if(type === 'next') {
-			return <a>下页</a>;
-		}
-		return originalElement;
-	}
+	onChange = (page) => {
+  	this.setState({
+  		page:page
+  	})
+  	this.getlist()
+  }
 	otherBtnClick = () =>{
 		this.formRef.current.validateFields().then((values) => {
 			var obj = JSON.parse(JSON.stringify(values))
@@ -248,6 +245,9 @@ const validateName = (rule, value) => {
 			typedelete(a).then(res=>{
 				message.success('删除成功');
 				_this.getlist()
+				_this.setState({
+					pid:''
+				})
 			})
     		},
     		onCancel() {
@@ -271,6 +271,9 @@ const validateName = (rule, value) => {
 			typedelete(a).then(res=>{
 				message.success('删除成功');
 				_this.getlist()
+				_this.setState({
+					pid:''
+				})
 			})
     		},
     		onCancel() {

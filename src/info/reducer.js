@@ -11,6 +11,7 @@ export default (prev = State, actions) =>{
 			break;
 		case 'CHAGNE_ROUTE':
 			newData.route = params
+			break;
 		default:
 			break;
 	}

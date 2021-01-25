@@ -188,10 +188,10 @@ class Demo extends React.Component {
     			};
   			}}
         pagination={{ 
-        	defaultPageSize:5,
+        	defaultPageSize:this.state.size,
         	total:this.state.total,
         	showTotal: () => '共'+this.state.total+'条',
-        	itemRender:this.onShowSizeChange
+        	onChange:this.onChange
         }}
         rowSelection={rowSelection}
       />
@@ -222,15 +222,12 @@ class Demo extends React.Component {
     </div>
 		)
 	}
-	onShowSizeChange(current, type, originalElement) {
-		if(type === 'prev') {
-			return <a>上页</a>;
-		}
-		if(type === 'next') {
-			return <a>下页</a>;
-		}
-		return originalElement;
-	}
+	onChange = (page) => {
+  	this.setState({
+  		page:page
+  	})
+  	this.getlist()
+  }
 	deloutdict = () =>{
 		if(this.state.selectedRows.length == 0){
 			message.error('请选择需要删除的数据');
@@ -254,6 +251,10 @@ class Demo extends React.Component {
 			dictdelete(a).then(res=>{
 				message.success('删除成功');
 				_this.getlist()
+				_this.setState({
+						findname:''
+				})
+				
 			})
     		},
     		onCancel() {
@@ -293,6 +294,9 @@ class Demo extends React.Component {
 			dictdelete(a).then(res=>{
 				message.success('删除成功');
 				_this.getlist()
+				_this.setState({
+						findname:''
+				})
 			})
     		},
     		onCancel() {
@@ -319,7 +323,7 @@ class Demo extends React.Component {
 			})
 		}else{
 			obj.id = this.state.id
-			dictadd(obj).then(res=>{
+			dicteduit(obj).then(res=>{
 				this.handleCancel()
 				message.success('修改成功');
 				this.getlist()

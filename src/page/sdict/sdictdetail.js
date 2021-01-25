@@ -76,10 +76,10 @@ render() {
         dataSource={this.state.tabledata}
         scroll={{y: 300 }}
         pagination={{ 
-        	defaultPageSize:5,
+        	defaultPageSize:this.state.size,
         	total:this.state.total,
         	showTotal: () => '共'+this.state.total+'条',
-        	itemRender:this.onShowSizeChange
+        	onChange:this.onChange
         }}
         rowSelection={rowSelection}
       />
@@ -168,15 +168,12 @@ otherBtnClick = () => {
 
 		});
 	}
-onShowSizeChange = (current, type, originalElement) => {
-		if(type === 'prev') {
-			return <a>上页</a>;
-		}
-		if(type === 'next') {
-			return <a>下页</a>;
-		}
-		return originalElement;
-}
+onChange = (page) => {
+  	this.setState({
+  		page:page
+  	})
+  	this.getlist()
+  }
 getlist =(name)=>{
 	 this.setState({ 
 	 	name:name,

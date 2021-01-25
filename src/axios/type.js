@@ -46,6 +46,11 @@ let typedeletedetail=(data)=>axios({
 	url:'/react/type/deletedetail',
 	data:data,
 })
+let typecode=(data)=>axios({
+	method:'get',
+	url:'/react/type/findname',
+	params:data,
+})
 export{
 	typelist,
 	typeadd,
@@ -54,5 +59,6 @@ export{
 	typedetail,
 	typedelete,
 	typeeduitdetail,
-	typedeletedetail
+	typedeletedetail,
+	typecode
 }

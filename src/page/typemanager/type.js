@@ -43,6 +43,7 @@ class Homefour extends Component {
 			findname:'',
 			vtitle:'新增',
 			visible:false,
+			height:document.body.clientHeight - 366,
 			selectedRowKeys:[],
 			selectedRows:[],
 			tabledata:[],
@@ -98,7 +99,7 @@ const validateName = (rule, value) => {
         <Table
         columns={this.columns}
         dataSource={this.state.tabledata}
-        scroll={{y: 300 }}
+        scroll={{y: this.state.height }}
         onRow={record => {
     			return {
       			onClick: event => {

@@ -43,6 +43,7 @@ class Homefour extends Component {
 			vtitle:'添加',
 			value: 'Hello Runoob!',
 			name:'',
+			height:document.body.clientHeight - 336,
 			page:1,
 			size:10,
 			total:0,
@@ -74,7 +75,7 @@ render() {
     	<Table
         columns={this.columns}
         dataSource={this.state.tabledata}
-        scroll={{y: 300 }}
+        scroll={{y: this.state.height }}
         pagination={{ 
         	defaultPageSize:this.state.size,
         	total:this.state.total,

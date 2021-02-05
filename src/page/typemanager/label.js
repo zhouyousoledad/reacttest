@@ -51,6 +51,7 @@ class Homefour extends Component {
 			page:1,
 			size:10,
 			total:0,
+			height:document.body.clientHeight - 366,
 		}
 	}
 	render() {
@@ -98,7 +99,7 @@ const validateName = (rule, value) => {
         <Table
         columns={this.columns}
         dataSource={this.state.tabledata}
-        scroll={{y: 300 }}
+        scroll={{y: this.state.height }}
         onRow={record => {
     			return {
       			onClick: event => {

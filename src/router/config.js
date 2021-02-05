@@ -11,6 +11,8 @@ import Nofond from '../page/nofond';
 import Media from '../page/media'
 import Warning from '../page/warning/warning'
 import Institutions from '../page/institutions/institutions'
+import Pinglist from '../page/pinglist'
+import Feedlist from '../page/feedlist'
 import { Router,Switch,Route,Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history'; // 如果是hash路由
 //引入一些模块
@@ -77,12 +79,12 @@ const userrouter = {
       },
       {
         path: "/index/pinglist",
-        component: Classify,
+        component: Pinglist,
         requiresAuth: false,
       },
       {
         path: "/index/feedlist",
-        component: Classify,
+        component: Feedlist,
         requiresAuth: false,
       },
       {

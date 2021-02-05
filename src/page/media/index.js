@@ -30,6 +30,7 @@ class Homethree extends Component {
     	page:1,
 		size:10,
 		classifiy:[],
+		height:document.body.clientHeight - 366,
 		ground:[],
 		medianame:'',
 		fonts:'555',
@@ -138,7 +139,7 @@ class Homethree extends Component {
     			<Button type="primary" className="seracherbutton" onClick={this.adddict} icon={<PlusOutlined />}>新增</Button>
         		<Button type="primary" danger className="seracherbutton marginle" onClick={this.del} icon={<DeleteOutlined />}>删除</Button>
     		</div>
-    		<Table dataSource={this.state.data} columns={this.state.columns} scroll={{y: 300 }} rowSelection={rowSelection}
+    		<Table dataSource={this.state.data} columns={this.state.columns} scroll={{y: this.state.height }} rowSelection={rowSelection}
     			pagination={{
         			defaultPageSize:5,
         			total:this.state.total,
@@ -296,7 +297,14 @@ class Homethree extends Component {
   	if(_this.state.selectedRows.length == 0){
   		message.error('请选择数据');
   	}else{
-  		_this.state.selectedRows.forEach(v=>{
+  		confirm({
+    		title: '提示',
+    		icon: <ExclamationCircleOutlined />,
+    		content: '您确定要删除选中的数据吗？',
+    		okText: '确定',
+    		cancelText: '取消',
+    		onOk() {
+			_this.state.selectedRows.forEach(v=>{
 			arr.push(v._id)
 		})
 		var a={
@@ -306,6 +314,12 @@ class Homethree extends Component {
 			message.success('删除成功');
 			_this.getlist()
 		})
+    		},
+    		onCancel() {
+      		
+    		},
+  	});
+  		
   	}
   }
   onChange = (page) => {

@@ -133,6 +133,7 @@ class Demo extends React.Component {
 			size: 10,
 			name: '',
 			findname:'',
+			height:document.body.clientHeight - 366,
 			total:0,
 			id:'',
 			type:1, //1是添加，二是修改
@@ -174,7 +175,7 @@ class Demo extends React.Component {
         <Table
         columns={this.columns}
         dataSource={this.state.tabledata}
-        scroll={{y: 300 }}
+        scroll={{y: this.state.height }}
         onRow={record => {
     			return {
       			onClick: event => {

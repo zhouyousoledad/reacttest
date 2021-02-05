@@ -55,6 +55,7 @@ class ForwardRef extends Component {
 			page: 1,
 			size: 10,
 			total: 0,
+			height:document.body.clientHeight - 336,
 			id:'',
 			vtitle: '新增',
 			visible: false,
@@ -96,7 +97,7 @@ class ForwardRef extends Component {
         				{ 
         					this.state.pid ?
         					<div>
-        					<Table columns={this.columns} dataSource={this.state.tabledata} scroll={{y: 300 }}
+        					<Table columns={this.columns} dataSource={this.state.tabledata} scroll={{y: this.state.height }}
         pagination={{ 
         	defaultPageSize:this.state.size,
         	total:this.state.total,

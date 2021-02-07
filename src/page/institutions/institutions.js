@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Table, Space,Button,Row,Col,Form,message,Select,Input,Modal,TreeSelect,Radio,InputNumber,DatePicker } from 'antd';
 import { SearchOutlined, PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
 import './institutions.css';
-import { institutionslist,institutionschoose,institutionsadd } from '../../axios/institutions';
+import { institutionslist,institutionschoose,institutionsadd,institutionseduit,institutionsdelete } from '../../axios/institutions';
 import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 const { Option } = Select;
@@ -64,13 +64,24 @@ class institutions extends Component {
 			time:'',
 			data:[],
 			treeData:[],
+			selectedRowKeys:[],
+			selectedRows:[],
 			name:'',
 			height:document.body.clientHeight - 366,
 			vtitle:'',
-			visible:false
+			visible:false,
+			id:'',
 		}
 	}
 	render() {
+			const {
+		selectedRowKeys
+	} = this.state;
+  	const rowSelection = {
+		selectedRowKeys,
+		onChange: this.onSelectChange,
+		hideDefaultSelections: true,
+	};
 		const layout = {
 		labelCol: {
 			span: 8,
@@ -141,7 +152,7 @@ class institutions extends Component {
 			<div className="media-body">
 			<div className="seacher-blcok">    		
     			<Input value={this.state.name} onChange={this.getname} className="seracherinpuy" placeholder="请输入名称" />
-    			<Button type="primary" className="seracherbutton" onClick={this.seracher} icon={<SearchOutlined />}>搜索</Button>
+    			<Button type="primary" className="seracherbutton" onClick={this.getlist} icon={<SearchOutlined />}>搜索</Button>
     		</div>
 			<div className="operation-block">
 				<Button type="primary" className="seracherbutton" onClick={this.add} icon={<PlusOutlined />}>新增</Button>
@@ -187,23 +198,79 @@ class institutions extends Component {
 		
 	}
 	del = () =>{
-		
+		var _this = this
+  		var arr = []
+  		if(_this.state.selectedRows.length == 0){
+  			message.error('请选择数据');
+  		}else{
+  			confirm({
+    			title: '提示',
+    			icon: <ExclamationCircleOutlined />,
+    			content: '您确定要删除选中的数据吗？',
+    			okText: '确定',
+    			cancelText: '取消',
+    			onOk() {
+					_this.state.selectedRows.forEach(v=>{
+						arr.push(v._id)
+					})
+					var a={
+						"id":arr.join(',')
+					}
+					institutionsdelete(a).then(res=>{
+						if(res.data.code == 200){
+							message.success('删除成功');
+							_this.getlist()
+						}else{
+							message.error(res.data.msg);
+						}
+						
+					})
+    			},
+    			onCancel() {
+      		
+    			},
+  			});
+  		}
 	}
 	handleProvinceChange = (e) =>{
 		this.setState({
   			isTop:e.target.value,
   		})
 	}
+	 onSelectChange = (selectedRowKeys, selectedRows) => {
+	this.setState({
+		selectedRowKeys,
+		selectedRows
+	});		
+  }
 	otherBtnClick = () =>{
 		this.formRef.current.validateFields().then((values) => {
   			
   			var obj = JSON.parse(JSON.stringify(values))
-  			if(obj.isTop == 1){
+  			if(obj.isTop == 1){  //顶层
   				obj.pid = 0
+  				obj.deadline = moment(obj.deadline).format("YYYY-MM-DD HH:mm:ss")
   			}
-			obj.deadline = moment(obj.deadline).format("YYYY-MM-DD HH:mm:ss")
+  			if(this.state.id == '' || this.state.id == null){
+  				institutionsadd(obj).then(res=>{
+					if(res.data.code == 200){
+						this.cancel()
+	 					this.getlist()
+						message.success('添加成功');
+					}
+				})
+  			}else{
+  				obj.id = this.state.id 
+  				institutionseduit(obj).then(res=>{
+  					if(res.data.code == 200){
+						this.cancel()
+	 					this.getlist()
+						message.success('编辑成功');
+					}
+  				})
+  			}
+			
   			console.log(obj)
-//			institutionsadd()
   		})	
 	}
 	cancel = () =>{
@@ -239,10 +306,62 @@ class institutions extends Component {
 		}
 	}
 	eduit = (record) =>{
-		
+		console.log(record)
+		this.setState({
+			visible:true,
+			vtitle:'修改',
+			id:record._id,
+			isTop: record.pid == 0 ? 1 : 0
+		});
+		var obj = {
+			"name":record.name,
+			"pid":record.pid,
+			"orderno":record.orderno
+		}
+		if(record.pid == 0){
+			obj.isTop = 1
+			obj.address = record.address
+			obj.assessmentNumber = record.assessmentNumber
+			obj.contact = record.contact
+			obj.contactPhone = record.contactPhone
+			obj.deadline = moment(record.deadline, "YYYY-MM-DD HH:mm:ss")
+			obj.noticeDay = record.noticeDay
+			obj.organizationCode = record.organizationCode
+			obj.userLimit = record.userLimit
+		}else{
+			obj.isTop = 0
+		}
+		setTimeout(()=>{
+			this.formRef.current.setFieldsValue(obj)
+		},0)
 	}
 	delinner = (record) =>{
-		
+		var _this = this
+		confirm({
+    		title: '提示',
+    		icon: <ExclamationCircleOutlined />,
+    		content: '您确定要删除这条数据吗？',
+    		okText: '确定',
+    		cancelText: '取消',
+    		onOk() {
+			var a={
+				"id":record._id
+			}
+			institutionsdelete(a).then(res=>{
+				if(res.data.code == 200){
+					message.success('删除成功');
+					_this.getlist()
+				}else{
+					message.error(res.data.msg);
+				}
+				
+				
+			})
+    		},
+    		onCancel() {
+      		
+    		},
+  	});
 	}
 	getname = (e) =>{
 		this.setState({

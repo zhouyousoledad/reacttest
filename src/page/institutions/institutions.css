@@ -1,3 +1,53 @@
-.operation-block{
-	margin-bottom: 20px;
+.dictlcass{
+	height:100%;
+	background-color: #f0f2f5;
 }
+.usercontent{
+	height: 100%;
+}
+.usercontent-left{
+	width: 450px;
+	margin-right: 20px;
+}
+.usercontent-right{
+	width: calc(100% - 470px);
+}
+.usercontent-left, .usercontent-right{
+	height: 100%;
+	float: left;
+}
+
+.dictinner-out{
+	height: 100%;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+	padding: 0px 0 20px 0;
+}
+.serachertreeinpuy{
+	width: calc(100% - 97px) !important;
+	margin-right: 15px !important;
+}
+.username{
+	width: 200px !important;
+	margin-right: 15px !important;
+}
+.user-optionbutton{
+	margin: 10px 0;
+}
+.addbut{
+	margin-right: 10px;
+}
+.clearfix:before,
+	.clearfix:after {
+		content: "";
+		display: table;
+	}
+	
+	.clearfix:after {
+		clear: both;
+	}
+	
+	.clearfix {
+		*zoom: 1;
+	}

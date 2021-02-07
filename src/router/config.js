@@ -11,6 +11,7 @@ import Nofond from '../page/nofond';
 import Media from '../page/media'
 import Warning from '../page/warning/warning'
 import Institutions from '../page/institutions/institutions'
+import Institutionsuser from '../page/institutions/instructionuser'
 import Pinglist from '../page/pinglist'
 import Feedlist from '../page/feedlist'
 import { Router,Switch,Route,Redirect } from 'react-router-dom';
@@ -64,7 +65,7 @@ const userrouter = {
       },
       {
         path: "/index/psychologicaluser",
-        component: Classify,
+        component: Institutionsuser,
         requiresAuth: false,
       },
       {

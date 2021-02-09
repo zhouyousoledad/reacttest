@@ -1,0 +1,53 @@
+.testbank-body{
+	position: relative;
+	height: 100%;
+	padding: 0 20px;
+}
+.dia-log{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 99;
+	background-color: #fff;
+}
+.addbank{
+	padding: 0 20px;
+	height: 100%;
+}
+.bankstep{
+	margin: 20px 0;
+}
+.bankstep-buttons{
+	text-align: center;
+	margin-top: 20px;
+}
+.bankstep-buttons button{
+	margin-right: 20px;
+}
+.bankcontent{
+	height: calc(100% - 150px);
+	overflow-y: auto;
+}
+.green{
+	background-color: #52c41a !important;
+	border-color:#52c41a !important;
+}
+.second-add{
+	margin-bottom: 20px;
+}
+.eduitborder{
+	border:1px solid rgba(0,0,0,.2);
+}
+.secondcol input{
+	width: calc(100% - 40px);
+	margin-right: 20px;
+}
+.secondcol span{
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	vertical-align: sub;
+	color: #f5222d;
+}

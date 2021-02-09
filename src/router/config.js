@@ -14,6 +14,7 @@ import Institutions from '../page/institutions/institutions'
 import Institutionsuser from '../page/institutions/instructionuser'
 import Pinglist from '../page/pinglist'
 import Feedlist from '../page/feedlist'
+import Testbank from '../page/testbank'
 import { Router,Switch,Route,Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history'; // 如果是hash路由
 //引入一些模块
@@ -45,7 +46,7 @@ const userrouter = {
       },
       {
         path: "/index/blist",
-        component: Classify,
+        component: Testbank,
         requiresAuth: false,
       },
       {

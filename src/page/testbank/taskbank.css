@@ -29,6 +29,7 @@
 .bankcontent{
 	height: calc(100% - 150px);
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 .green{
 	background-color: #52c41a !important;
@@ -42,7 +43,6 @@
 }
 .secondcol input{
 	width: calc(100% - 40px);
-	margin-right: 20px;
 }
 .secondcol span{
 	width: 20px;
@@ -50,4 +50,43 @@
 	cursor: pointer;
 	vertical-align: sub;
 	color: #f5222d;
+}
+.hide{
+	display: none;
+}
+.test-upload{
+	display: inline-flex;
+	border:1px dashed #c2c2c2;
+	border-radius:10px;
+	justify-content:center;
+	align-items:center;
+	cursor: pointer;
+	width: calc(100% - 35px);
+	height: 150px;
+}
+.test-upload img{
+	width: 100%;
+	height: 100%;
+}
+.inline-flex{
+	vertical-align: bottom !important;
+}
+.margin-left{
+	margin-left: 15px;
+}
+.leftblock{
+	float: left;
+	width: 30%;
+	margin-right: 15px;
+}
+.leftblock img{
+	width: 100%;
+	height: 100px;
+}
+.rightblock{
+	float: left;
+	width: calc(70% - 15px);
+}
+.rightblock ul li{
+	margin-bottom: 15px;
 }

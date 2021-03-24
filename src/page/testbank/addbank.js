@@ -18,7 +18,7 @@ class Addbank extends Component {
     this.state = {
 		vtitle:'',
 		visible:false,
-		current:1
+		current:0
     }
   	}
   render() {
@@ -32,7 +32,15 @@ class Addbank extends Component {
   			</Steps>
   			</div>
   			<div className="bankcontent">
-  				{this.stepcontent()}
+  				<div className={this.state.current == 0?'word-style':'word-style hide'}>
+  					<Firststep ref={this.first}></Firststep>
+  				</div>
+  				<div className={this.state.current == 1?'word-style':'word-style hide'}>
+  					<Secondstep ref={this.second}></Secondstep>
+  				</div>
+  				<div className={this.state.current == 2?'word-style':'word-style hide'}>
+  					<Laststep ref={this.last}></Laststep>
+  				</div>
   			</div>
   			<div className="bankstep-buttons">
   				<Button onClick={this.cancel} icon={<CloseCircleOutlined />}>取消</Button>
@@ -49,6 +57,9 @@ class Addbank extends Component {
   cancel = () => {
   	this.props.cancel(false)
   }
+  setfirst = (row) =>{
+  	this.first.current.set(row)
+  }
   previous = () => {
   	let prive = --this.state.current
   	this.setState({ 
@@ -57,35 +68,40 @@ class Addbank extends Component {
 	 	
   	})
   }
+  save = () =>{
+  	this.last.current.validation().then(res=>{
+  		this.props.cancel(true)
+  	})	
+  }
   nextstep = ()=> {
   	if(this.state.current == 0){  //检验第一个是否通过
-  		let flag = this.first.current.validation()
-  		if(flag){
-  			this.setState({ 
-	 			current:++this.state.current
-			})
-  		}else{
-  			message.error('请完成必填的数据');
-  		}
+  		this.first.current.validation().then(res=>{
+  			console.log(res)
+  			if(res.tid != ''){
+  			if(res.flag){
+  				this.setState({ 
+	 				current:++this.state.current,
+				},() => {
+     				this.second.current.getlist(res.value,res.tid)   
+  				})
+  			}else{
+  				message.error('请完成必填的数据');
+  			}
+  			}else{
+  				this.props.cancel(true)
+  			}
+  		})
   	}else if(this.state.current == 1){  //检验第二个是否通过
-  		
+  		this.second.current.validation().then(res=>{
+  			this.setState({ 
+	 			current:++this.state.current,
+			},() => {
+     			this.last.current.getlist(res)  
+  			})
+  			
+  		})	
   	}
 	
-  }
-  stepcontent(){
-    if (this.state.current == 0) {
-      return (
-        <Firststep ref={this.first}></Firststep>
-      );
-    } else if(this.state.current == 1) {
-      return (
-        <Secondstep ref={this.second}></Secondstep>
-      );
-    } else if(this.state.current == 2){
-      return (
-        <Laststep ref={this.last}></Laststep>
-      );
-    }
   }
   componentDidMount(){
 	

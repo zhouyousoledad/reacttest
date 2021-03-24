@@ -4,6 +4,14 @@ let login=(data)=>axios({
 	url:'/react/login/login',
 	data:data
 })
+let commonupload=(data)=>axios({
+	method:'post',
+	url:'/react/login/uploads',
+	headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+	data:data
+})
 let code=(data)=>axios({
 	method:'post',
 	url:'/react/login/code',
@@ -63,5 +71,6 @@ export{
 	dictdetail,
 	dictadddetail,
 	dicteduitdetail,
-	dictdeletedetail
+	dictdeletedetail,
+	commonupload
 }

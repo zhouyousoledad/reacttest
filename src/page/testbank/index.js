@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { Table, Input, Button, Modal,Select,message} from 'antd';
 import { SearchOutlined, PlusOutlined, DeleteOutlined, ExclamationCircleOutlined, EditOutlined } from '@ant-design/icons';
-//import { warninglist,warningadd,warningeduit,warningdelete } from '../../axios/warning';
+import { banklist,bankdelete } from '../../axios/testbank';
 import Addbank from './addbank.js'
 import './taskbank.css';
 const { Option } = Select;
@@ -28,21 +28,24 @@ class Testbank extends Component {
     	columns:[
   {
     title: '题目',
-    dataIndex: 'title',
-    key: 'title',
+    dataIndex: 'content',
+    key: 'content',
+    render:(text,record) => (
+    	<div  dangerouslySetInnerHTML = {{__html:record.content}}></div>
+    )
   },
   {
   	title:'标签',
-  	dataIndex:'label',
-  	key:'label'
+  	dataIndex:'tagName',
+  	key:'tagName'
   },{
   	title:'题目类型',
-  	dataIndex:'qtype',
-  	key:'qtype'
+  	dataIndex:'qtypeName',
+  	key:'qtypeName'
   },{
   	title:'选项类型',
-  	dataIndex:'anstype',
-  	key:'anstype'
+  	dataIndex:'anstypeName',
+  	key:'anstypeName'
   },{
 	title: '操作',
 	key: 'operation',
@@ -96,13 +99,12 @@ class Testbank extends Component {
     	</div>
     )
   }
-
   eduitdict = (row) =>{
 	this.setState({
-		visible:true,
-		id:row._id,
+		visible:true
+	},()=>{
+		this.child.current.setfirst(row)
 	});
-	
   }
   delinnerdict = (row) =>{
   	var _this = this
@@ -116,10 +118,10 @@ class Testbank extends Component {
 			var a={
 				"id":row._id
 			}
-//			warningdelete(a).then(res=>{
-//				message.success('删除成功');
-//				_this.getlist()
-//			})
+			bankdelete(a).then(res=>{
+				message.success('删除成功');
+				_this.getlist()
+			})
     		},
     		onCancel() {
       		
@@ -144,9 +146,12 @@ class Testbank extends Component {
 	})
   }
   cancel = (data) =>{
-  	console.log(data)
   	this.setState({
 		visible:false,
+	},()=>{
+		if(data){
+			this.getlist()
+		}
 	})
   }
   del = () => {
@@ -168,10 +173,10 @@ class Testbank extends Component {
 		var a={
 			"id":arr.join(',')
 		}
-//		warningdelete(a).then(res=>{
-//			message.success('删除成功');
-//			_this.getlist()
-//		})
+		bankdelete(a).then(res=>{
+			message.success('删除成功');
+			_this.getlist()
+		})
     		},
     		onCancel() {
       		
@@ -198,21 +203,20 @@ class Testbank extends Component {
   	var a={
 		"page":this.state.page,
 		"size":this.state.size,
-		"name":this.state.name
 	}
-//	warninglist(a).then(res=>{
-//		this.setState({
-//			data: res.data.data,
-//			total:res.data.total,
-//			selectedRowKeys:[],
-//			selectedRows:[]		
-//		});
-//	})
+	banklist(a).then(res=>{
+		this.setState({
+			data: res.data.data,
+			total:res.data.total,
+			selectedRowKeys:[],
+			selectedRows:[]		
+		});
+	})
   }
 
 
   componentDidMount(){
-//	this.getlist()
+	this.getlist()
   }
 }
 export default Testbank

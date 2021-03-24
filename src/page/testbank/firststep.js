@@ -1,13 +1,14 @@
 import React, {
 	Component,createRef
 } from 'react';
-import { Row, Col, Form, Select } from 'antd';
+import { Row, Col, Form, Select,message } from 'antd';
 import { dictdetail } from '../../axios/api';
 import { labeltree } from '../../axios/label';
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'
 import './taskbank.css';
 import axios from 'axios';
+import { bankadd,bankeduit } from '../../axios/testbank';
 const anstypes = [];
 const { Option, OptGroup } = Select;
 class Addbank extends Component {
@@ -18,7 +19,9 @@ class Addbank extends Component {
     	editorState: BraftEditor.createEditorState(null),
 		labeloption:[],
 		qtypedata:[],
-		anstypedata:[]
+		anstypedata:[],
+		tid:'',
+		flag:0
     }
   	}
   render() {
@@ -36,7 +39,7 @@ class Addbank extends Component {
       			<Col span={12}>
       				<Form {...layout} ref={this.formRef}>	
       					<Form.Item label="题目类型" name='qtype' rules={[{ required: true, message: '请选择题目类型' }]}>
-              				<Select allowClear showArrow="true" style={{ width: '100%' }} placeholder="请选择">
+              				<Select allowClear showArrow="true" style={{ width: '100%' }} placeholder="请选择" onChange={this.handleProvinceChange}>
       							{this.state.qtypedata.map(v => <Option key={v.value}>{v.label}</Option>)}
     						</Select>
             			</Form.Item>
@@ -46,11 +49,16 @@ class Addbank extends Component {
             					
     						</Select>
             			</Form.Item>
-            			<Form.Item label="选项类型" name='anstype' rules={[{ required: true, message: '请选择选项类型' }]}>
-            				<Select allowClear showArrow="true" style={{ width: '100%' }} placeholder="请选择">
-      							{this.state.anstypedata.map(v => <Option key={v.value}>{v.label}</Option>)}
-    						</Select>
-            			</Form.Item>
+            			{
+            				this.state.flag != 2 ?
+            				<Form.Item label="选项类型" name='anstype' rules={[{ required: true, message: '请选择选项类型' }]}>
+            					<Select allowClear showArrow="true" style={{ width: '100%' }} placeholder="请选择">
+      								{this.state.anstypedata.map(v => <Option key={v.value}>{v.label}</Option>)}
+    							</Select>
+            				</Form.Item>:
+            				''
+            			}
+            			
       			</Form>
       			</Col>
       			<Col span={12}>
@@ -92,21 +100,58 @@ class Addbank extends Component {
 		})
   	}))	
   }
-  validation = () => {
-  	this.formRef.current.validateFields().then((values) => {
-  		console.log(this.state.editorState.toHTML())
-  		var flag = false
-  		var Strings = this.state.editorState.toHTML()
-  		var newStrings = Strings.replace(/<(?!img).*?>/g, "")  
-  		if(newStrings == '' || newStrings == null){
-  			flag = false
-  		}else{
-  			flag = true
-  		}
-  		return true
-  	})	
+  handleProvinceChange = (data) =>{
+  		this.setState({
+  			flag:data
+  		})
   }
-  
+  validation = () => {
+  	 return  new Promise((resolve, reject)=>{
+        this.formRef.current.validateFields().then((values) => {
+        	let Strings = this.state.editorState.toHTML()
+			let newStrings = Strings.replace(/<(?!img).*?>/g, "")
+			if(newStrings){
+				console.log(this.state)
+				values.content = this.state.editorState.toHTML()
+				values.tid = this.state.tid
+				console.log(values)
+				bankadd(values).then(res=>{
+				message.success('添加成功');
+				let valiod={
+        			"flag":false,
+        			"tid":res.data.data,
+        			"value":values.anstype
+        		}
+				if(newStrings != ''){
+					valiod.flag = true
+				}
+            		resolve(valiod);
+			})
+			}else{
+				message.error('请填写题目');
+			}
+			
+			
+        });
+    })  	
+  }
+  set = (row) =>{
+  	
+  	var obj = {
+  		"qtype":row.qtype,
+  		"anstype":row.anstype,
+  		"tagIds":row.tagIds,
+  	}
+  	const editorState2 = BraftEditor.createEditorState(row.content)
+  	this.setState({
+  		'editorState':editorState2,
+  		'tid':row._id
+  	},()=>{
+  		setTimeout(()=>{
+			this.formRef.current.setFieldsValue(obj)
+		},0)
+  	})
+  }
   componentDidMount(){
 	this.getdata()
   }

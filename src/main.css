@@ -21,3 +21,10 @@ body,html{
 a{
 	color: #000;
 }
+ul li{
+	list-style: none;
+}
+p{
+	margin: 0;
+	padding: 0;
+}
